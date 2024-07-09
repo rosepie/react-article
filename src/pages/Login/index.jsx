@@ -1,10 +1,17 @@
 import './index.scss'
 import { Card, Form, Input, Button } from 'antd'
+import { fetchLogin } from '@/store/modules/user'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
+
+  //触发 异步请求获取 token
+  const dispatch = useDispatch()
   const onFinish = (value) => {
-    console.log('登录表单：', value)
+    console.log('表单：', value)
+    dispatch(fetchLogin(value))
   }
+
   return (
     <div className="login">
       <Card className="login-container">
@@ -35,8 +42,8 @@ const Login = () => {
                 message: '请输入密码'
               },
               {
-                pattern: /[0-9a-zA-Z]{9}/,
-                message: '请输入正确格式的密码(9位数,数字或字母)'
+                pattern: /[0-9a-zA-Z]{6}/,
+                message: '请输入正确格式的密码(6位数,数字或字母)'
               }
             ]}
           >
