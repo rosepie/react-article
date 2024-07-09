@@ -7,12 +7,13 @@ const userStore = createSlice({
   name: 'user',
   //数据
   initialState: {
-    token: ''
+    token: localStorage.getItem('token_key') || ''
   },
   //同步修改方法
   reducers: {
     setToken(state, action) {
       state.token = action.payload
+      localStorage.setItem('token_key', action.payload)
     }
   }
 })
@@ -29,7 +30,7 @@ const fetchLogin = (loginForm) => {
     //使用封装好的 axios 发送异步请求
     const res = await request.post('/authorizations', loginForm)
     //dispatch 调用同步修改方法
-    dispatch(setToken((await res).data.token))
+    dispatch(setToken(res.data.token))
   }
 }
 
