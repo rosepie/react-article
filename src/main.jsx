@@ -7,6 +7,10 @@ import { RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
 
+//清除默认浏览器样式
+import 'normalize.css'
+import './index.scss'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
