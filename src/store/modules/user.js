@@ -1,26 +1,33 @@
 // 用户信息 - 状态管理
-
-import { request } from '@/utils'
 import { createSlice } from '@reduxjs/toolkit'
-import { setToken as _setToken, getToken } from '@/utils'
+import { request, setToken as _setToken, getToken, removeToken } from '@/utils'
 
 const userStore = createSlice({
   name: 'user',
   //数据
   initialState: {
-    token: getToken() || ''
+    token: getToken() || '',
+    userInfo: {}
   },
   //同步修改方法
   reducers: {
     setToken(state, action) {
       state.token = action.payload
       _setToken(action.payload)
+    },
+    setUserInfo(state, action) {
+      state.userInfo = action.payload
+    },
+    clearUserInfo(state) {
+      state.token = ''
+      removeToken()
+      state.userInfo = {}
     }
   }
 })
 
 //解构出方法 actionCreator，以导出
-const { setToken } = userStore.actions
+const { setToken, setUserInfo, clearUserInfo } = userStore.actions
 
 //获取 reducer 函数，以导出
 const userReducer = userStore.reducer
@@ -35,5 +42,13 @@ const fetchLogin = (loginForm) => {
   }
 }
 
-export { setToken, fetchLogin }
+//异步 获取用户信息
+const fetchUserInfo = () => {
+  return async (dispatch) => {
+    const res = await request.get('/user/profile')
+    dispatch(setUserInfo(res.data))
+  }
+}
+
+export { fetchLogin, fetchUserInfo, clearUserInfo }
 export default userReducer
