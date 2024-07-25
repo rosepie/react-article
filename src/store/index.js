@@ -2,10 +2,12 @@
 
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './modules/user'
+import breadcrumbReducer from './modules/breadcrumb'
 
 const store = configureStore({
   reducer: {
-    userReducer
+    userReducer,
+    breadcrumbReducer
   }
 })
 
