@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
 import {
   Breadcrumb,
   Button,
@@ -7,15 +6,16 @@ import {
   Input,
   Select
 } from 'antd'
+import ReactQuill from 'react-quill'
 import breadcrumbList from '@/constant/breadcrumbList'
-import { setBreadcrumb } from '@/store/modules/breadcrumb'
+import { getCategoryAPI } from '@/apis/article'
 
 import './index.scss'
-
-const {TextArea} = Input
+import 'react-quill/dist/quill.snow.css'
 
 const Publish = () => {
-  const dispatch = useDispatch()
+  const [options, setOptions] = useState([])
+  const [items, setItems] = useState([])
   useEffect(() => {
     const path = location.pathname
     const items = [
@@ -26,19 +26,19 @@ const Publish = () => {
         title: breadcrumbList[path]
       }
     ]
-    dispatch(setBreadcrumb(items))
-  }, [dispatch])
-  const items = useSelector(state => state.breadcrumbReducer.breadcrumb)
+    setItems(items)
+  }, [])
 
-  //文章分类
-  const options = [{
-    value: 'jack',
-    label: 'Jack',
-  },
-    {
-      value: 'lucy',
-      label: 'Lucy',
-    }]
+  useEffect(() => {
+    const getCategory = async () => {
+      const res = await getCategoryAPI()
+      const options = res.data.channels.map((item) => {
+        return {value: item.name, label: item.name}
+      })
+      setOptions(options)
+    }
+    getCategory()
+  })
 
   return (
     <div className="wrapper">
@@ -76,6 +76,7 @@ const Publish = () => {
             <Select
               mode='multiple'
               placeholder='请选择文章类别'
+              allowClear={true}
               onChange={() => {}}
               options={options}
             />
@@ -90,13 +91,13 @@ const Publish = () => {
               }
             ]}
           >
-            <TextArea
-              showcount
-              placeholder='请输入文章内容...'
-              onChange={() => {}}
+            <ReactQuill
+              className='publish-quill'
+              theme='snow'
+              placeholder='请输入文章内容'
             />
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 10}}>
+          <Form.Item wrapperCol={{ offset: 2}}>
             <Button size='large' type='primary' htmlType='submit'>发布文章</Button>
           </Form.Item>
         </Form>

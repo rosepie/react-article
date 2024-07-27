@@ -1,15 +1,13 @@
-import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
 import {
   Breadcrumb
 } from 'antd'
 import breadcrumbList from '@/constant/breadcrumbList'
-import { setBreadcrumb } from '@/store/modules/breadcrumb'
 
 import './index.scss'
 
 const Publish = () => {
-  const dispatch = useDispatch()
+  const [items, setItems] = useState([])
   useEffect(() => {
     const path = location.pathname
     const items = [
@@ -20,9 +18,8 @@ const Publish = () => {
         title: breadcrumbList[path]
       }
     ]
-    dispatch(setBreadcrumb(items))
-  }, [dispatch])
-  const items = useSelector(state => state.breadcrumbReducer.breadcrumb)
+    setItems(items)
+  }, [])
 
   return (
     <div className="wrapper">
