@@ -5,8 +5,11 @@ import {
   Form,
   Input,
   message,
-  Select
+  Select,
+  Upload,
+  Radio
 } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import ReactQuill from 'react-quill'
 import breadcrumbList from '@/constant/breadcrumbList'
 import { getCategoryAPI, publishArticleAPI } from '@/apis/article'
@@ -17,6 +20,9 @@ import 'react-quill/dist/quill.snow.css'
 const Publish = () => {
   const [options, setOptions] = useState([])
   const [items, setItems] = useState([])
+  const [type, setType] = useState(1)
+  const [images, setImages] = useState({})
+  const [form] = Form.useForm()
   useEffect(() => {
     const path = location.pathname
     const items = [
@@ -44,11 +50,23 @@ const Publish = () => {
   // 提交表单回调函数
   const onFinish = async (value) => {
     value.cover = {
-      type: 0,
-      images: []
+      type: type,
+      images: images
     }
     await publishArticleAPI(value)
     message.success('文章发布成功')
+    //清空所有表单
+    form.resetFields()
+  }
+
+  //封面类别
+  const typeChange = (e) => {
+    setType(e.target.value)
+  }
+  
+  //上传文章封面
+  const uploadChange = (value) => {
+    setImages(value.fileList)
   }
 
   return (
@@ -58,9 +76,11 @@ const Publish = () => {
         <Form
           className='article-form'
           name='article'
-          labelCol={8}
-          wrapperCol={16}
+          form={form}
+          labelCol={{span: 2}}
+          wrapperCol={{span: 22}}
           onFinish={onFinish}
+          initialValues={{ type: 1 }}
         >
           <Form.Item
             label='标题'
@@ -87,9 +107,30 @@ const Publish = () => {
             <Select
               placeholder='请选择文章类别'
               allowClear={true}
-              onChange={() => {}}
               options={options}
             />
+          </Form.Item>
+          <Form.Item
+            label='封面'
+          >
+            <Form.Item name='type'>
+              <Radio.Group onChange={typeChange}>
+                <Radio value={1}>单图</Radio>
+                <Radio value={3}>三图</Radio>
+                <Radio value={0}>无图</Radio>
+              </Radio.Group>
+            </Form.Item>
+            {type > 0  && <Upload
+              name='image'
+              listType='picture-card'
+              showUploadList
+              action={'http://geek.itheima.net/v1_0/upload'}
+              onChange={uploadChange}
+            >
+              <div style={{ marginTop: 4 }}>
+                <PlusOutlined />
+              </div>
+            </Upload>}
           </Form.Item>
           <Form.Item
             label='内容'
