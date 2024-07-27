@@ -49,6 +49,11 @@ const Publish = () => {
 
   // 提交表单回调函数
   const onFinish = async (value) => {
+    //校验封面数量是否符合
+    if(images.length !== type) {
+      message.warning('封面数量不匹配！')
+      return 
+    }
     value.cover = {
       type: type,
       images: images.map((item) => {
