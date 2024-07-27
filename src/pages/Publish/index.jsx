@@ -4,11 +4,12 @@ import {
   Button,
   Form,
   Input,
+  message,
   Select
 } from 'antd'
 import ReactQuill from 'react-quill'
 import breadcrumbList from '@/constant/breadcrumbList'
-import { getCategoryAPI } from '@/apis/article'
+import { getCategoryAPI, publishArticleAPI } from '@/apis/article'
 
 import './index.scss'
 import 'react-quill/dist/quill.snow.css'
@@ -38,7 +39,17 @@ const Publish = () => {
       setOptions(options)
     }
     getCategory()
-  })
+  }, [])
+
+  // 提交表单回调函数
+  const onFinish = async (value) => {
+    value.cover = {
+      type: 0,
+      images: []
+    }
+    await publishArticleAPI(value)
+    message.success('文章发布成功')
+  }
 
   return (
     <div className="wrapper">
@@ -49,7 +60,7 @@ const Publish = () => {
           name='article'
           labelCol={8}
           wrapperCol={16}
-          onFinish={() => {}}
+          onFinish={onFinish}
         >
           <Form.Item
             label='标题'
@@ -74,7 +85,6 @@ const Publish = () => {
             ]}
           >
             <Select
-              mode='multiple'
               placeholder='请选择文章类别'
               allowClear={true}
               onChange={() => {}}
