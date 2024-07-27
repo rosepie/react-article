@@ -51,7 +51,9 @@ const Publish = () => {
   const onFinish = async (value) => {
     value.cover = {
       type: type,
-      images: images
+      images: images.map((item) => {
+        return item.response.data.url
+      })
     }
     await publishArticleAPI(value)
     message.success('文章发布成功')
