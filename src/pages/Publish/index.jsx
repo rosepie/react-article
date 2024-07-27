@@ -120,17 +120,20 @@ const Publish = () => {
                 <Radio value={0}>无图</Radio>
               </Radio.Group>
             </Form.Item>
-            {type > 0  && <Upload
-              name='image'
-              listType='picture-card'
-              showUploadList
-              action={'http://geek.itheima.net/v1_0/upload'}
-              onChange={uploadChange}
-            >
-              <div style={{ marginTop: 4 }}>
-                <PlusOutlined />
-              </div>
-            </Upload>}
+            {type > 0  &&
+              <Upload
+                name='image'
+                listType='picture-card'
+                showUploadList
+                action={'http://geek.itheima.net/v1_0/upload'}
+                onChange={uploadChange}
+                maxCount={type}
+              >
+                <div style={{ marginTop: 4 }}>
+                  <PlusOutlined />
+                </div>
+              </Upload>
+            }
           </Form.Item>
           <Form.Item
             label='内容'
