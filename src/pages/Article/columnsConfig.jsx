@@ -1,3 +1,5 @@
+import { Tag } from 'antd'
+
 const columns = [
   {
     title: '封面',
@@ -12,7 +14,10 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'status',
-    key: 'status'
+    key: 'status',
+    render: data => {
+      return data === 1 ? <Tag color='warning'>待审核</Tag> : <Tag color='success'>审核通过</Tag>
+    }
   },
   {
     title: '发布时间',

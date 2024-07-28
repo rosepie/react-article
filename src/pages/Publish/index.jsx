@@ -21,7 +21,7 @@ import 'react-quill/dist/quill.snow.css'
 const Publish = () => {
   const [items, setItems] = useState([])
   const [type, setType] = useState(1)
-  const [images, setImages] = useState({})
+  const [images, setImages] = useState([])
   const [form] = Form.useForm()
   useEffect(() => {
     const path = location.pathname

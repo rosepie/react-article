@@ -10,7 +10,7 @@ import {
 } from 'antd'
 import locale from 'antd/es/date-picker/locale/zh_CN'
 import breadcrumbList from '@/constant/breadcrumbList'
-import columns from './columnsConfig'
+import columns from './columnsConfig.jsx'
 import useCategory from '@/hooks/useCategory'
 import { getArticleListAPI } from '@/apis/article'
 
@@ -81,7 +81,7 @@ const Publish = () => {
                 label='日期'
                 name='pubdate'
               >
-                <DatePicker.RangePicker
+                <DatePicker.RangePicker  
                   placeholder={['开始日期', '结束日期']}
                   locale={locale}
                 />
