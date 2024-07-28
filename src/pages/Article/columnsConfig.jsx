@@ -4,7 +4,10 @@ const columns = [
   {
     title: '封面',
     dataIndex: 'cover',
-    key: 'cover'
+    key: 'cover',
+    render: cover => {
+      return cover.images.length > 0 ? <img src={cover.images[0]} width={60} height={60} /> : ''
+    }
   },
   {
     title: '标题',
@@ -41,8 +44,6 @@ const columns = [
   },
   {
     title: '操作',
-    dataIndex: 'operate',
-    key: 'operate'
   }
 ]
 
