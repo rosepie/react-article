@@ -12,13 +12,13 @@ import {
 import { PlusOutlined } from '@ant-design/icons'
 import ReactQuill from 'react-quill'
 import breadcrumbList from '@/constant/breadcrumbList'
-import { getCategoryAPI, publishArticleAPI } from '@/apis/article'
+import { publishArticleAPI } from '@/apis/article'
+import useCategory from '@/hooks/useCategory'
 
 import './index.scss'
 import 'react-quill/dist/quill.snow.css'
 
 const Publish = () => {
-  const [options, setOptions] = useState([])
   const [items, setItems] = useState([])
   const [type, setType] = useState(1)
   const [images, setImages] = useState({})
@@ -35,17 +35,7 @@ const Publish = () => {
     ]
     setItems(items)
   }, [])
-
-  useEffect(() => {
-    const getCategory = async () => {
-      const res = await getCategoryAPI()
-      const options = res.data.channels.map((item) => {
-        return {value: item.name, label: item.name}
-      })
-      setOptions(options)
-    }
-    getCategory()
-  }, [])
+  const options = useCategory()
 
   // 提交表单回调函数
   const onFinish = async (value) => {
