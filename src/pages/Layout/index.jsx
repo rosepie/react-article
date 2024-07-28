@@ -26,7 +26,7 @@ const items = [
     icon: <DiffOutlined />,
   },
   {
-    label: '创建文章',
+    label: '发布文章',
     key: '/publish',
     icon: <EditOutlined />,
   },

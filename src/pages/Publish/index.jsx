@@ -24,6 +24,8 @@ const Publish = () => {
   const [type, setType] = useState(1)
   const [images, setImages] = useState([])
   const [form] = Form.useForm()
+  const [searchParams] = useSearchParams()
+  const articleId = searchParams.get('id')
   useEffect(() => {
     const path = location.pathname
     const items = [
@@ -31,11 +33,11 @@ const Publish = () => {
         title: <a href="/">首页</a>
       },
       {
-        title: breadcrumbList[path]
+        title: articleId ? breadcrumbList[path][1] : breadcrumbList[path][0]
       }
     ]
     setItems(items)
-  }, [])
+  }, [articleId])
   const options = useCategory()
 
   // 提交表单回调函数
@@ -68,8 +70,6 @@ const Publish = () => {
   }
 
   //回填数据
-  const [searchParams] = useSearchParams()
-  const articleId = searchParams.get('id')
   useEffect(() => {
     const getDetail = async () => {
       const res = await getArticleDetail(articleId)
@@ -83,7 +83,7 @@ const Publish = () => {
         return { url: item }
       }))
     }
-    getDetail()
+    articleId && getDetail()
   }, [articleId, form])
 
   return (
