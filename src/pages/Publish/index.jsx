@@ -13,7 +13,7 @@ import {
 import { PlusOutlined } from '@ant-design/icons'
 import ReactQuill from 'react-quill'
 import breadcrumbList from '@/constant/breadcrumbList'
-import { getArticleDetail, publishArticleAPI } from '@/apis/article'
+import { getArticleDetail, publishArticleAPI, editArticleAPI } from '@/apis/article'
 import useCategory from '@/hooks/useCategory'
 
 import './index.scss'
@@ -50,13 +50,27 @@ const Publish = () => {
     value.cover = {
       type: type,
       images: images.map((item) => {
-        return item.response.data.url
+        if(item.response) {
+          return item.response.data.url
+        } else {
+          return item.url
+        }
       })
     }
-    await publishArticleAPI(value)
-    message.success('文章发布成功')
-    //清空所有表单
-    form.resetFields()
+    //新增
+    if (!articleId) {
+      await publishArticleAPI(value)
+      message.success('文章发布成功')
+      //清空所有表单
+      form.resetFields()
+    } else {
+      //编辑
+      await editArticleAPI({
+        ...value,
+        id: articleId
+      })
+      message.success('文章编辑成功')
+    }
   }
 
   //封面类别

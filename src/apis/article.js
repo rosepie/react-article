@@ -36,3 +36,11 @@ export function getArticleDetail(id) {
     method: 'GET'
   })
 }
+
+export function editArticleAPI(value) {
+  return request({
+    url: `/mp/articles/${value.id}?draft=false`,
+    method: 'PUT',
+    data: value
+  })
+}
