@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import {
   Breadcrumb,
   Button,
@@ -12,7 +13,7 @@ import {
 import { PlusOutlined } from '@ant-design/icons'
 import ReactQuill from 'react-quill'
 import breadcrumbList from '@/constant/breadcrumbList'
-import { publishArticleAPI } from '@/apis/article'
+import { getArticleDetail, publishArticleAPI } from '@/apis/article'
 import useCategory from '@/hooks/useCategory'
 
 import './index.scss'
@@ -65,6 +66,17 @@ const Publish = () => {
   const uploadChange = (value) => {
     setImages(value.fileList)
   }
+
+  //回填数据
+  const [searchParams] = useSearchParams()
+  const articleId = searchParams.get('id')
+  useEffect(() => {
+    const getDetail = async () => {
+      const res = await getArticleDetail(articleId)
+      form.setFieldsValue(res.data)
+    }
+    getDetail()
+  }, [articleId, form])
 
   return (
     <div className="wrapper">

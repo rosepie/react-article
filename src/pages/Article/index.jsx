@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Breadcrumb,
   Form,
@@ -19,6 +20,7 @@ import { delArticleAPI, getArticleListAPI } from '@/apis/article'
 import './index.scss'
 
 const Publish = () => {
+  const navigate = useNavigate()
   const options = useCategory()
   const [items, setItems] = useState([])
   const [list, setList] = useState([])
@@ -89,7 +91,7 @@ const Publish = () => {
         render: data => {
           return (
             <>
-              <Button type='primary' shape='circle' icon={<EditOutlined />} style={{ marginRight: 5 }}></Button>
+              <Button type='primary' shape='circle' icon={<EditOutlined />} style={{ marginRight: 5 }} onClick={() => navigate(`/publish?id=${data.id}`)}></Button>
               <Popconfirm
                 title='删除文章'
                 description='确认要删除当前文章吗'
@@ -105,6 +107,8 @@ const Publish = () => {
       }
     } else { return item }
   })
+
+  //编辑
 
   return (
     <>
